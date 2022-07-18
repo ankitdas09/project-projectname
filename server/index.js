@@ -5,10 +5,13 @@ const cors = require('cors')
 const cookieSession = require('cookie-session')
 const passport = require('passport')
 const GoogleStrat = require('./passport/passport.config')
+const bodyParser = require('body-parser')
 
 const authRoutes = require('./routes/auth.routes')
+const formRoutes = require('./routes/form.routes')
 
 const app = express()
+app.use(bodyParser.json())
 app.use(cors({
     origin: process.env.CLIENT_URL,
     methods: "GET,POST,PUT,DELETE",
@@ -23,6 +26,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/auth', authRoutes)
+app.use('/forms', formRoutes)
 
 app.use((err, req, res, next) => {
     const { status = 500, message = 'Something went wrong!' } = err
