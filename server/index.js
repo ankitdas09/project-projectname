@@ -24,6 +24,11 @@ app.use(passport.session())
 
 app.use('/auth', authRoutes)
 
+app.use((err, req, res, next) => {
+    const { status = 500, message = 'Something went wrong!' } = err
+    res.status(status).json({ error: true, message: message })
+})
+
 const PORT = process.env.PORT || 8000
 
 app.listen(PORT, (req, res) => console.log(`Listening on PORT ${PORT}`))
